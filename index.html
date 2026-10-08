@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AbueApp · Tu hogar, en buenas manos</title>
+<meta name="description" content="Servicios confiables para adultos mayores y sus familias: limpieza del hogar y compra + entrega.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b2a4e;
+    --orange:#ff6b00;
+    --orange-btn:#d94f00;
+    --orange-soft:#fff1e6;
+    --green:#1f7a4d;
+    --green-soft:#e6f5ec;
+    --gray:#566070;
+    --line:#e6e8ee;
+    --bg:#fff;
+    --chip:#f1f2f5;
+    --page:#f6f7fa;
+    --danger:#c0302b;
+    --radius:24px;
+    --pad:clamp(16px,4vw,32px);
+    --tabs-h:84px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;background:var(--page);color:var(--navy);line-height:1.4}
+  img,svg{max-width:100%}
+  button,input,select,textarea{font-family:inherit;color:inherit}
+  a{color:inherit}
+  [hidden]{display:none !important}
+
+  .app{
+    width:100%;max-width:1160px;margin:0 auto;background:var(--bg);
+    min-height:100vh;min-height:100dvh;
+    padding:16px var(--pad) calc(var(--tabs-h) + 24px + env(safe-area-inset-bottom,0px));
+  }
+
+  /* Encabezado */
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:clamp(14px,3vw,26px)}
+  .logo{display:flex;align-items:center;gap:6px;font-weight:800;font-size:clamp(26px,5vw,30px);color:var(--orange);letter-spacing:-.5px;text-decoration:none}
+  .logo svg{width:30px;height:34px;flex:none}
+  .loc{background:var(--chip);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;display:flex;gap:6px;white-space:nowrap}
+  .top-nav{display:none}
+
+  /* Pantallas */
+  .screen:focus{outline:none}
+  h1{font-size:clamp(28px,6.4vw,44px);line-height:1.12;letter-spacing:-.6px;margin-bottom:12px;text-wrap:balance}
+  h1:focus{outline:none}
+  h2{font-size:clamp(21px,4.5vw,27px);letter-spacing:-.3px;margin:clamp(24px,5vw,36px) 0 12px}
+  .lead{font-size:clamp(17px,3.8vw,20px);line-height:1.5;color:var(--gray);font-weight:500;max-width:56ch}
+  .back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:16px;color:var(--gray);text-decoration:none;padding:8px 14px 8px 8px;margin:0 0 10px -8px;border-radius:999px;min-height:44px}
+  .back:hover{background:var(--chip)}
+
+  /* Hero (inicio) */
+  .intro{display:grid;gap:clamp(20px,4vw,40px)}
+  .hero{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:400/350;max-height:420px;width:100%;background:linear-gradient(160deg,#cfd8c9,#e8e2d6 50%,#b9c7b0)}
+  .art{width:100%;height:100%;display:block}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .badge{position:absolute;left:14px;bottom:14px;width:fit-content;max-width:calc(100% - 28px);background:rgba(255,255,255,.96);border-radius:999px;padding:9px 16px 9px 12px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:clamp(13px,3.6vw,15px);line-height:1.2;box-shadow:0 4px 14px rgba(20,30,60,.12)}
+  .badge .ico{font-size:20px;flex:none}
+
+  /* Tarjetas de servicio */
+  .services{display:grid;gap:14px}
+  .svc{
+    display:flex;align-items:center;gap:16px;text-decoration:none;
+    border:2px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff;
+    transition:border-color .15s, transform .1s;
+  }
+  .svc:hover{border-color:var(--orange)}
+  .svc:active{transform:scale(.985)}
+  .tile{display:grid;place-items:center;flex:none;width:68px;height:68px;border-radius:20px;background:var(--orange-soft);font-size:34px;line-height:1}
+  .svc h3{font-size:21px;line-height:1.2;margin-bottom:4px}
+  .svc p{color:var(--gray);font-size:16px;line-height:1.35}
+  .svc .price-tag{display:inline-block;margin-top:6px;font-weight:800;font-size:18px;color:var(--orange-btn)}
+  .svc .chev{margin-left:auto;font-size:26px;color:#9aa3b8;flex:none}
+
+  /* Botones */
+  .btn{
+    border:0;cursor:pointer;text-decoration:none;
+    background:var(--orange-btn);color:#fff;font-weight:800;font-size:clamp(18px,4.6vw,20px);
+    border-radius:999px;padding:17px 28px;min-height:58px;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    transition:transform .1s, filter .15s;
+  }
+  .btn:hover{filter:brightness(1.07)}
+  .btn:active{transform:scale(.97)}
+  .btn.block{width:100%}
+  .btn.ghost{background:var(--chip);color:var(--navy)}
+  :is(.btn,.back,.svc,.tab,.top-nav a,.menu a,.choice:has(input:focus-visible),.link-btn):focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+  .actions{margin-top:22px}
+
+  /* Detalle de servicio */
+  .split{display:grid;gap:20px}
+  .panel{border:2px solid var(--line);border-radius:var(--radius);padding:20px;background:#fff}
+  .panel.soft{background:var(--page);border-color:transparent}
+  .checks{list-style:none;display:grid;gap:10px}
+  .checks li{display:flex;gap:12px;align-items:center;font-size:18px;font-weight:600}
+  .checks li::before{content:"✓";flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--green-soft);color:var(--green);font-weight:800;font-size:16px}
+  .facts{display:grid;gap:10px;margin-bottom:18px}
+  .fact{display:flex;justify-content:space-between;gap:12px;font-size:18px}
+  .fact span{color:var(--gray)}
+  .fact b{text-align:right}
+  .big-price{font-size:clamp(40px,9vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1}
+  .big-price small{font-size:18px;font-weight:600;letter-spacing:0;color:var(--gray)}
+  .options{display:grid;gap:12px}
+  .opt{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:20px;background:var(--page)}
+  .opt .e{font-size:30px;line-height:1}
+  .opt strong{display:block;font-size:19px}
+  .opt span{color:var(--gray);font-size:16px}
+  .note{color:var(--gray);font-size:16px;line-height:1.45;margin-top:10px}
+
+  /* Formularios */
+  form{display:grid;gap:20px}
+  .field{display:grid;gap:8px}
+  label.lbl,.legend{font-weight:800;font-size:18px}
+  .hint{color:var(--gray);font-size:15px}
+  input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+    width:100%;font-size:18px;font-weight:600;padding:14px 16px;min-height:56px;
+    border:2px solid #cfd4df;border-radius:16px;background:#fff;
+  }
+  textarea{min-height:110px;resize:vertical;line-height:1.4}
+  input:focus,select:focus,textarea:focus{outline:3px solid rgba(27,42,78,.25);border-color:var(--navy)}
+  [aria-invalid=true]{border-color:var(--danger) !important}
+  .err{color:var(--danger);font-weight:700;font-size:15px;min-height:0}
+  fieldset{border:0;display:grid;gap:10px}
+  .choice{display:flex;gap:14px;align-items:center;padding:14px 16px;border:2px solid var(--line);border-radius:18px;cursor:pointer;font-size:18px;font-weight:700;background:#fff}
+  .choice input{width:24px;height:24px;accent-color:var(--orange-btn);flex:none}
+  .choice:has(input:checked){border-color:var(--orange-btn);background:var(--orange-soft)}
+  .prod-row{display:flex;gap:10px}
+  .prod-row button{flex:none;width:56px;border:2px solid #cfd4df;background:#fff;border-radius:16px;font-size:22px;cursor:pointer}
+  .link-btn{background:none;border:2px dashed #b8bfce;border-radius:16px;min-height:52px;font-weight:800;font-size:17px;color:var(--navy);cursor:pointer;padding:0 16px}
+  .link-btn:hover{border-color:var(--orange-btn);color:var(--orange-btn)}
+  .total-row{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--line);padding-top:14px;margin-top:4px;font-size:20px;font-weight:800}
+  .total-row b{font-size:32px;letter-spacing:-.5px}
+
+  /* Mis servicios */
+  .list{display:grid;gap:14px}
+  .item{border:2px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:grid;gap:6px;font-size:17px}
+  .item h3{font-size:21px;margin-bottom:4px}
+  .item .row{color:var(--gray)}
+  .item .row b{color:var(--navy)}
+  .status{justify-self:start;margin-top:8px;font-weight:800;font-size:16px;padding:7px 14px;border-radius:999px}
+  .status.ok{background:var(--green-soft);color:var(--green)}
+  .status.wip{background:var(--orange-soft);color:var(--orange-btn)}
+  .empty{text-align:center;padding:36px 20px;border:2px dashed #cfd4df;border-radius:var(--radius);color:var(--gray);font-size:18px}
+  .empty .e{font-size:48px;display:block;margin-bottom:8px}
+  .empty .btn{margin-top:16px}
+
+  /* Chat */
+  .chat{display:grid;gap:14px;margin-top:18px}
+  .msgs{display:flex;flex-direction:column;gap:10px;min-height:220px;max-height:50vh;overflow-y:auto;padding:16px;background:var(--page);border-radius:var(--radius)}
+  .msg{max-width:82%;padding:12px 16px;border-radius:20px;font-size:17px;line-height:1.4;overflow-wrap:anywhere}
+  .msg.them{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px;align-self:flex-start}
+  .msg.me{background:var(--navy);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+  .send{display:flex;gap:10px}
+  .send .btn{padding:0 24px;min-height:56px}
+
+  /* Perfil */
+  .who{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+  .avatar{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--orange-soft);font-size:36px;flex:none}
+  .menu{list-style:none;border:2px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .menu li+li{border-top:1px solid var(--line)}
+  .menu a{display:flex;align-items:center;gap:14px;padding:18px 20px;text-decoration:none;font-weight:700;font-size:18px;min-height:64px}
+  .menu a:hover{background:var(--page)}
+  .menu .chev{margin-left:auto;color:#9aa3b8;font-size:24px}
+
+  /* Barra inferior */
+  .bottom{position:fixed;left:0;right:0;bottom:0;z-index:10;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(20,30,60,.06);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tabs{display:flex;justify-content:space-around;max-width:560px;margin:0 auto;padding:6px 8px 8px}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;font-weight:700;font-size:14px;color:#6c7794;padding:6px 10px;border-radius:14px;min-width:72px}
+  .tab svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .tab[aria-current=page]{color:var(--navy)}
+  .tab[aria-current=page] svg{stroke:var(--orange-btn)}
+
+  /* Aviso y diálogo */
+  .toast{position:fixed;left:50%;bottom:calc(var(--tabs-h) + 18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;font-weight:700;padding:14px 22px;border-radius:999px;z-index:30;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(20,30,60,.3)}
+  dialog{border:0;border-radius:var(--radius);padding:28px 24px 22px;width:min(92vw,400px);margin:auto;color:var(--navy);text-align:center;box-shadow:0 20px 60px rgba(20,30,60,.3)}
+  dialog::backdrop{background:rgba(27,42,78,.55)}
+  dialog .big{font-size:52px;display:block;margin-bottom:8px}
+  dialog h2{font-size:24px;margin:0 0 8px}
+  dialog p{color:var(--gray);font-size:17px;margin-bottom:20px}
+
+  /* Tablet */
+  @media (min-width:640px){
+    .services{grid-template-columns:1fr 1fr}
+    .svc{flex-direction:column;align-items:flex-start;padding:24px}
+    .svc .chev{display:none}
+    .options{grid-template-columns:repeat(3,1fr)}
+    .opt{flex-direction:column;gap:8px}
+  }
+
+  /* Escritorio */
+  @media (min-width:960px){
+    :root{--tabs-h:0px}
+    body{padding:24px}
+    .app{border-radius:32px;min-height:0;padding:24px 40px 56px;box-shadow:0 10px 40px rgba(20,30,60,.08)}
+    header{margin-bottom:32px}
+    .top-nav{display:flex;gap:4px}
+    .top-nav a{color:#6c7794;text-decoration:none;font-weight:700;font-size:16px;padding:10px 16px;border-radius:999px}
+    .top-nav a:hover{background:var(--chip);color:var(--navy)}
+    .top-nav a[aria-current=page]{color:var(--navy);background:var(--chip)}
+    .bottom{display:none}
+    .toast{bottom:32px}
+    .intro{grid-template-columns:1.05fr 1fr;align-items:center}
+    .intro .hero{max-height:none;aspect-ratio:400/360}
+    .split{grid-template-columns:1.2fr 1fr;align-items:start;gap:32px}
+    .split>aside,.split>.side{position:sticky;top:24px}
+    form.split .side{display:grid;gap:18px}
+  }
+  @media (min-width:1200px){ body{padding:40px 24px} }
+
+  /* ================= INICIO: foto arriba y página completa ================= */
+  .app{position:relative;--bleed:var(--pad)}
+  .app.is-home{padding-top:0;overflow:hidden}
+  .app.is-home header{position:absolute;top:0;left:0;right:0;margin:0;padding:16px var(--pad);z-index:5}
+  .app.is-home .logo{background:#fff;padding:6px 14px 6px 10px;border-radius:999px;box-shadow:0 4px 14px rgba(20,30,60,.18)}
+  .app.is-home .loc{background:#fff;box-shadow:0 4px 14px rgba(20,30,60,.18)}
+  .app.is-home .top-nav{background:#fff;border-radius:999px;padding:4px;box-shadow:0 4px 14px rgba(20,30,60,.18)}
+
+  #inicio .hero{
+    margin:0 calc(var(--bleed) * -1);width:auto;max-height:none;aspect-ratio:auto;border-radius:0;
+    height:clamp(400px,112vw,540px);
+  }
+  #inicio .hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(27,42,78,.28),transparent 28%,transparent 62%,rgba(27,42,78,.35))}
+  #inicio .hero img{object-position:center 30%}
+  #inicio .badge{z-index:2;bottom:52px;left:var(--bleed)}
+
+  .home-body{position:relative;z-index:3;margin:-30px calc(var(--bleed) * -1) 0;padding:26px var(--bleed) 0;background:#fff;border-radius:30px 30px 0 0}
+  .home-intro{display:grid;gap:22px}
+  .btn-row{display:grid;gap:12px;margin-top:20px}
+  .btn-row .btn{width:100%}
+
+  .trust{display:grid;gap:12px}
+  .tcard{display:flex;gap:16px;align-items:flex-start;border:2px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff}
+  .tcard h3{font-size:20px;margin-bottom:4px;line-height:1.2}
+  .tcard p{color:var(--gray);font-size:16px;line-height:1.4}
+
+  .hsteps{list-style:none;display:grid;gap:12px;counter-reset:hs}
+  .hsteps li{counter-increment:hs;display:flex;gap:14px;align-items:flex-start;background:var(--page);border-radius:20px;padding:18px;font-size:17px;color:var(--gray)}
+  .hsteps li::before{content:counter(hs);flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:19px}
+  .hsteps strong{display:block;color:var(--navy);font-size:20px;margin-bottom:2px}
+
+  .band{margin-top:clamp(28px,6vw,48px);background:var(--navy);color:#fff;border-radius:var(--radius);padding:28px 24px;display:grid;gap:18px;align-items:center}
+  .band h2{margin:0 0 8px;color:#fff}
+  .band p{color:#d5dbea;font-size:18px;line-height:1.45}
+  .band .cover{margin-top:10px;font-weight:700;color:#fff}
+  .band .btn{width:100%}
+  .foot{text-align:center;color:var(--gray);font-size:15px;padding:26px 0 8px}
+
+  @media (min-width:640px){
+    .btn-row{display:flex}
+    .btn-row .btn{width:auto}
+    .trust{grid-template-columns:1fr 1fr}
+    .hsteps{grid-template-columns:repeat(3,1fr)}
+    .hsteps li{flex-direction:column;gap:12px;padding:22px}
+  }
+  @media (min-width:960px){
+    .app{--bleed:40px}
+    .app.is-home{padding-top:0}
+    .app.is-home header{padding:20px 40px}
+    #inicio .hero{height:clamp(440px,44vw,560px)}
+    #inicio .badge{bottom:56px}
+    .home-body{margin-top:-34px;padding-top:36px;padding-bottom:36px}
+    .home-intro{grid-template-columns:1.05fr 1fr;gap:48px;align-items:center}
+    .home-intro .services{grid-template-columns:1fr}
+    .home-intro .svc{flex-direction:row;align-items:center;padding:20px}
+    .home-intro .svc .chev{display:block}
+    .trust{grid-template-columns:repeat(4,1fr)}
+    .tcard{flex-direction:column;gap:14px;padding:22px}
+    .band{grid-template-columns:1fr auto;padding:36px 40px}
+    .band .btn{width:auto;padding:19px 36px}
+  }
+
+  .hello{font-weight:800;font-size:18px;color:var(--orange-btn);margin-bottom:6px}
+  .auth{max-width:520px;margin:0 auto}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .btn,.svc{transition:none} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <a class="logo" href="#inicio" aria-label="AbueApp, ir al inicio">
+      <svg viewBox="0 0 32 36" aria-hidden="true"><path fill="#ff6b00" d="M16 0c6 5 11 12 11 20 0 5-3 9-7 12l-4 4-4-4c-4-3-7-7-7-12C5 12 10 5 16 0z"/><circle cx="16" cy="16" r="4.5" fill="#fff"/></svg>
+      AbueApp
+    </a>
+    <nav class="top-nav" aria-label="Principal">
+      <a href="#inicio" data-tab="inicio">🏠 Inicio</a>
+      <a href="#servicios" data-tab="servicios">📋 Mis servicios</a>
+      <a href="#chat" data-tab="chat">💬 Chat</a>
+      <a href="#perfil" data-tab="perfil">👤 Perfil</a>
+    </nav>
+    <div class="loc"><span aria-hidden="true">📍</span> CDMX · Edomex</div>
+  </header>
+
+  <main>
+
+    <!-- ============ INICIO ============ -->
+    <section class="screen" id="inicio" data-title="Inicio">
+
+      <!-- Foto de los abuelos: lo primero, hasta arriba -->
+      <div class="hero">
+        <svg class="art" viewBox="0 0 400 350" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Abuelos sonriendo en su casa">
+            <rect width="400" height="350" fill="#fde8cf"/>
+            <rect x="40" y="30" width="120" height="110" rx="8" fill="#bfe3f2" stroke="#fff" stroke-width="8"/>
+            <path d="M100 30v110M40 85h120" stroke="#fff" stroke-width="6"/>
+            <rect x="0" y="270" width="400" height="80" fill="#e9c9a0"/>
+            <path d="M345 270c-20-40-15-80 5-110 10 40 20 70-5 110zM365 270c15-30 25-60 20-90-20 25-30 55-20 90z" fill="#5f9b5a"/>
+            <rect x="333" y="262" width="44" height="40" rx="6" fill="#d9772b"/>
+            <path d="M200 70c-14-16-38 0-22 20l22 22 22-22c16-20-8-36-22-20z" fill="#ff6b00"/>
+            <path d="M70 350c0-60 30-100 80-100s80 40 80 100z" fill="#8e6bbf"/>
+            <rect x="132" y="215" width="36" height="40" rx="10" fill="#f2c9a5"/>
+            <circle cx="150" cy="130" r="22" fill="#d8d8de"/>
+            <circle cx="150" cy="180" r="46" fill="#f2c9a5"/>
+            <path d="M104 178c-6-50 30-66 46-66s52 16 46 66c-6-26-24-40-46-40s-40 14-46 40z" fill="#d8d8de"/>
+            <circle cx="134" cy="182" r="11" fill="none" stroke="#6b5a4a" stroke-width="3"/>
+            <circle cx="166" cy="182" r="11" fill="none" stroke="#6b5a4a" stroke-width="3"/>
+            <path d="M145 182h10" stroke="#6b5a4a" stroke-width="3"/>
+            <circle cx="134" cy="182" r="3" fill="#3b2f2f"/><circle cx="166" cy="182" r="3" fill="#3b2f2f"/>
+            <circle cx="122" cy="200" r="7" fill="#f2a6a0" opacity=".6"/><circle cx="178" cy="200" r="7" fill="#f2a6a0" opacity=".6"/>
+            <path d="M136 206q14 14 28 0" fill="none" stroke="#b5483a" stroke-width="4" stroke-linecap="round"/>
+            <path d="M170 350c0-60 30-95 80-95s80 35 80 95z" fill="#3f78b5"/>
+            <path d="M232 255l18 28 18-28z" fill="#fff"/>
+            <rect x="234" y="222" width="32" height="38" rx="10" fill="#efbf9a"/>
+            <circle cx="250" cy="190" r="48" fill="#efbf9a"/>
+            <path d="M204 195c-8-18-2-34 6-40-2 14 2 28 6 40zM296 195c8-18 2-34-6-40 2 14-2 28-6 40z" fill="#eee"/>
+            <path d="M228 168q10-8 20 0M252 168q10-8 20 0" stroke="#ddd" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <circle cx="234" cy="188" r="11" fill="none" stroke="#3b2f2f" stroke-width="3"/>
+            <circle cx="266" cy="188" r="11" fill="none" stroke="#3b2f2f" stroke-width="3"/>
+            <path d="M245 188h10" stroke="#3b2f2f" stroke-width="3"/>
+            <circle cx="234" cy="188" r="3" fill="#3b2f2f"/><circle cx="266" cy="188" r="3" fill="#3b2f2f"/>
+            <path d="M232 212q18-10 36 0q-18 6-36 0z" fill="#eee"/>
+            <path d="M238 222q12 10 24 0" fill="none" stroke="#b5483a" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        <!-- Si la foto carga, tapa la ilustración; si no existe, se oculta y se ve el SVG -->
+        <img src="img/WhatsApp Image 2026-09-30 at 11.17.00 PM (1).jpeg" alt="Abuelos sonriendo en su casa" onerror="this.style.display='none'">
+        <div class="badge"><span class="ico" aria-hidden="true">👵👴</span> Personal verificado · trato amable</div>
+      </div>
+
+      <div class="home-body">
+        <div class="home-intro">
+          <div>
+            <p class="hello" id="hello" hidden></p>
+            <h1 tabindex="-1">Tu hogar, en buenas manos.</h1>
+            <p class="lead">Servicios confiables para adultos mayores y sus familias.</p>
+            <div class="btn-row">
+              <a class="btn" href="#solicitar">📅 Solicitar servicio</a>
+              <a class="btn ghost" href="#chat">💬 Hablar con el equipo</a>
+            </div>
+          </div>
+
+          <div class="services">
+            <a class="svc" href="#limpieza">
+              <span class="tile" aria-hidden="true">🧹</span>
+              <span>
+                <h3>Limpieza del hogar</h3>
+                <p>$550 por jornada de 8 horas.</p>
+              </span>
+              <span class="chev" aria-hidden="true">›</span>
+            </a>
+            <a class="svc" href="#compra">
+              <span class="tile" aria-hidden="true">🛵</span>
+              <span>
+                <h3>Compra + entrega</h3>
+                <p>Realizamos la compra de despensa o medicamentos y los llevamos hasta tu domicilio.</p>
+                <span class="price-tag">Desde $150</span>
+              </span>
+              <span class="chev" aria-hidden="true">›</span>
+            </a>
+          </div>
+        </div>
+
+        <h2>Personas de confianza para tu familia</h2>
+        <div class="trust">
+          <article class="tcard">
+            <span class="tile" aria-hidden="true">🪪</span>
+            <div><h3>Identificación revisada</h3><p>Nadie entra a tu casa sin que hayamos visto su INE por los dos lados.</p></div>
+          </article>
+          <article class="tcard">
+            <span class="tile" aria-hidden="true">🧑‍🔧</span>
+            <div><h3>Siempre la misma persona</h3><p>Tus abuelos conocen a quien entra a su casa. Si no te convence, te asignamos otra.</p></div>
+          </article>
+          <article class="tcard">
+            <span class="tile" aria-hidden="true">🤝</span>
+            <div><h3>Trato amable y paciente</h3><p>Personas elegidas por su cariño y respeto hacia las personas mayores.</p></div>
+          </article>
+          <article class="tcard">
+            <span class="tile" aria-hidden="true">🔒</span>
+            <div><h3>Pago protegido</h3><p>Tú pagas a AbueApp y nosotros le pagamos a la persona al terminar la jornada. Tus abuelos no manejan dinero.</p></div>
+          </article>
+        </div>
+
+        <h2>Así funciona</h2>
+        <ol class="hsteps">
+          <li><div><strong>Elige tu servicio</strong>Limpieza del hogar o compra + entrega.</div></li>
+          <li><div><strong>Cuéntanos los detalles</strong>Dirección, fecha y horario, o los productos que necesitas.</div></li>
+          <li><div><strong>Nosotros nos encargamos</strong>Personal verificado o nuestro motorepartidor llegan hasta el domicilio.</div></li>
+        </ol>
+
+        <div class="band">
+          <div>
+            <h2>¿Listo para empezar?</h2>
+            <p>Elige el servicio que necesitas y nosotros nos encargamos del resto.</p>
+            <p class="cover">📍 Servicio en CDMX · Edomex</p>
+          </div>
+          <a class="btn" href="#solicitar">📅 Solicitar servicio</a>
+        </div>
+
+        <p class="foot">AbueApp · Servicios confiables para adultos mayores y sus familias.</p>
+      </div>
+    </section>
+
+    <!-- ============ LIMPIEZA DEL HOGAR ============ -->
+    <section class="screen" id="limpieza" data-title="Limpieza del hogar" hidden>
+      <a class="back" href="#inicio"><span aria-hidden="true">‹</span> Volver</a>
+      <div class="split">
+        <div>
+          <h1 tabindex="-1">Tu hogar limpio y en buenas manos.</h1>
+          <p class="lead">Servicio de limpieza realizado por personal capacitado y verificado.</p>
+          <h2>¿Qué incluye?</h2>
+          <ul class="checks">
+            <li>Limpieza general del hogar</li>
+            <li>Barrido y trapeado</li>
+            <li>Limpieza de superficies</li>
+            <li>Limpieza de cocina</li>
+            <li>Limpieza de baño</li>
+            <li>Orden general de las áreas</li>
+          </ul>
+        </div>
+        <aside class="panel soft">
+          <div class="big-price">$550 <small>por jornada de 8 horas</small></div>
+          <div class="facts" style="margin-top:18px">
+            <div class="fact"><span>🕐 Jornada</span><b>8 horas</b></div>
+            <div class="fact"><span>💰 Precio</span><b>$550</b></div>
+          </div>
+          <a class="btn block" href="#form-limpieza">Solicitar limpieza</a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ COMPRA + ENTREGA ============ -->
+    <section class="screen" id="compra" data-title="Compra + entrega" hidden>
+      <a class="back" href="#inicio"><span aria-hidden="true">‹</span> Volver</a>
+      <div class="split">
+        <div>
+          <h1 tabindex="-1">Nosotros compramos y lo llevamos hasta tu domicilio.</h1>
+          <p class="lead">Solicita la compra de productos que necesites y nuestro motorepartidor se encargará de realizar la compra y entregarla en el domicilio indicado.</p>
+          <h2>🛒 Puedes solicitar</h2>
+          <div class="options">
+            <div class="opt"><span class="e" aria-hidden="true">🛒</span><div><strong>Despensa</strong><span>Alimentos y productos básicos para el hogar.</span></div></div>
+            <div class="opt"><span class="e" aria-hidden="true">💊</span><div><strong>Medicamentos</strong><span>Compra y entrega de medicamentos solicitados por el cliente.</span></div></div>
+            <div class="opt"><span class="e" aria-hidden="true">🛒💊</span><div><strong>Despensa + medicamentos</strong><span>Puedes solicitar ambos en un mismo servicio.</span></div></div>
+          </div>
+        </div>
+        <aside class="panel soft">
+          <div style="font-weight:800;font-size:18px;margin-bottom:6px">💰 Costo del servicio</div>
+          <div class="big-price"><small style="font-size:22px">Desde</small> $150</div>
+          <p class="note">El costo de los productos se paga por separado.</p>
+          <p class="note" style="margin-bottom:18px">El precio del servicio puede variar dependiendo de la distancia y las características de la solicitud.</p>
+          <a class="btn block" href="#form-compra">Solicitar compra + entrega</a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ SOLICITAR SERVICIO ============ -->
+    <section class="screen" id="solicitar" data-title="Solicitar servicio" hidden>
+      <a class="back" href="#inicio"><span aria-hidden="true">‹</span> Volver</a>
+      <h1 tabindex="-1">¿Qué servicio necesitas?</h1>
+      <p class="lead">Selecciona un servicio para continuar.</p>
+      <div class="services" style="margin-top:22px">
+        <a class="svc" href="#form-limpieza">
+          <span class="tile" aria-hidden="true">🧹</span>
+          <span><h3>Limpieza del hogar</h3><p>$550 / jornada de 8 horas</p></span>
+          <span class="chev" aria-hidden="true">›</span>
+        </a>
+        <a class="svc" href="#form-compra">
+          <span class="tile" aria-hidden="true">🛵</span>
+          <span><h3>Compra + entrega</h3><p>Desde $150</p></span>
+          <span class="chev" aria-hidden="true">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ FORM: COMPRA + ENTREGA ============ -->
+    <section class="screen" id="form-compra" data-title="Solicitud de compra + entrega" hidden>
+      <a class="back" href="#solicitar"><span aria-hidden="true">‹</span> Volver</a>
+      <h1 tabindex="-1">Solicitud de compra + entrega</h1>
+      <form class="split" id="f-compra" novalidate>
+        <div style="display:grid;gap:22px">
+          <fieldset aria-describedby="e-tipo">
+            <legend class="legend">¿Qué necesitas comprar?</legend>
+            <label class="choice"><input type="radio" name="tipo" value="🛒 Despensa"> <span>🛒 Despensa</span></label>
+            <label class="choice"><input type="radio" name="tipo" value="💊 Medicamentos"> <span>💊 Medicamentos</span></label>
+            <label class="choice"><input type="radio" name="tipo" value="🛒💊 Despensa + medicamentos"> <span>🛒💊 Despensa + medicamentos</span></label>
+            <div class="err" id="e-tipo" role="alert"></div>
+          </fieldset>
+
+          <div class="field">
+            <span class="legend" id="prod-legend">Agrega los productos que necesitas</span>
+            <div id="prods" style="display:grid;gap:10px" role="group" aria-labelledby="prod-legend"></div>
+            <button type="button" class="link-btn" id="add-prod">+ Agregar producto</button>
+            <div class="err" id="e-prods" role="alert"></div>
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="c-dir">Dirección de entrega</label>
+            <input type="text" id="c-dir" autocomplete="street-address" placeholder="Escribe tu dirección" aria-describedby="e-cdir">
+            <div class="err" id="e-cdir" role="alert"></div>
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="c-notas">Notas para el motorepartidor</label>
+            <textarea id="c-notas" placeholder="Escribe aquí"></textarea>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="panel soft">
+            <div class="facts" style="margin-bottom:0">
+              <div class="fact"><span>Costo del servicio</span><b>Desde $150</b></div>
+              <div class="fact"><span>Costo de productos</span><b>Se calcula según la compra</b></div>
+            </div>
+          </div>
+          <button class="btn block" type="submit">Confirmar solicitud</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ FORM: LIMPIEZA ============ -->
+    <section class="screen" id="form-limpieza" data-title="Solicitud de limpieza" hidden>
+      <a class="back" href="#solicitar"><span aria-hidden="true">‹</span> Volver</a>
+      <h1 tabindex="-1">Agenda tu servicio de limpieza</h1>
+      <form class="split" id="f-limpieza" novalidate>
+        <div style="display:grid;gap:22px">
+          <div class="field">
+            <label class="lbl" for="l-dir">Dirección</label>
+            <input type="text" id="l-dir" autocomplete="street-address" placeholder="Escribe tu dirección" aria-describedby="e-ldir">
+            <div class="err" id="e-ldir" role="alert"></div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="l-fecha">Fecha</label>
+            <input type="date" id="l-fecha" aria-describedby="e-lfecha">
+            <div class="err" id="e-lfecha" role="alert"></div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="l-hora">Horario</label>
+            <select id="l-hora" aria-describedby="e-lhora">
+              <option value="">Seleccionar horario</option>
+              <option>7:00 a.m. – 3:00 p.m.</option>
+              <option>8:00 a.m. – 4:00 p.m.</option>
+              <option>9:00 a.m. – 5:00 p.m.</option>
+              <option>10:00 a.m. – 6:00 p.m.</option>
+            </select>
+            <div class="err" id="e-lhora" role="alert"></div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="panel soft">
+            <div class="facts">
+              <div class="fact"><span>Servicio</span><b>Limpieza del hogar</b></div>
+              <div class="fact"><span>Duración</span><b>8 horas</b></div>
+            </div>
+            <div class="total-row"><span>Total</span><b>$550</b></div>
+          </div>
+          <button class="btn block" type="submit">Confirmar servicio</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ ENTRAR / CREAR PERFIL ============ -->
+    <section class="screen" id="bienvenida" data-title="Entrar" hidden>
+      <a class="back" href="#inicio"><span aria-hidden="true">‹</span> Volver</a>
+      <div class="auth">
+        <h1 tabindex="-1">Entra a AbueApp</h1>
+        <p class="lead">Guarda tus datos y tus servicios para solicitar más rápido. Tu sesión se queda iniciada en este dispositivo.</p>
+        <form id="f-auth" novalidate style="margin-top:22px">
+          <div class="field">
+            <label class="lbl" for="a-nombre">👤 Nombre</label>
+            <input type="text" id="a-nombre" autocomplete="name" placeholder="Tu nombre" aria-describedby="e-anombre">
+            <div class="err" id="e-anombre" role="alert"></div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="a-tel">📱 Teléfono</label>
+            <input type="tel" id="a-tel" inputmode="numeric" autocomplete="tel" placeholder="10 dígitos" aria-describedby="e-atel">
+            <div class="err" id="e-atel" role="alert"></div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="a-mail">📧 Correo electrónico <span class="hint">(opcional)</span></label>
+            <input type="email" id="a-mail" autocomplete="email" placeholder="tucorreo@ejemplo.com" aria-describedby="e-amail">
+            <div class="err" id="e-amail" role="alert"></div>
+          </div>
+          <button class="btn block" type="submit">Continuar</button>
+          <p class="hint">Si ya usaste este teléfono en este dispositivo, entras a tu cuenta con tus datos guardados.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ MIS SERVICIOS ============ -->
+    <section class="screen" id="servicios" data-title="Mis servicios" hidden>
+      <h1 tabindex="-1">Mis servicios</h1>
+      <h2 style="margin-top:6px">Próximos servicios</h2>
+      <div class="list" id="lista"></div>
+    </section>
+
+    <!-- ============ CHAT ============ -->
+    <section class="screen" id="chat" data-title="Chat" hidden>
+      <h1 tabindex="-1">¿Necesitas ayuda?</h1>
+      <p class="lead">Comunícate con el equipo de AbueApp para resolver tus dudas sobre tu servicio.</p>
+      <div class="actions" id="chat-start"><button class="btn" id="btn-chat">💬 Iniciar chat</button></div>
+      <div class="chat" id="chat-box" hidden>
+        <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversación"></div>
+        <form class="send" id="f-chat">
+          <label for="chat-in" class="sr" style="position:absolute;left:-9999px">Escribe tu mensaje</label>
+          <input type="text" id="chat-in" placeholder="Escribe tu mensaje" autocomplete="off">
+          <button class="btn" type="submit" aria-label="Enviar mensaje">Enviar</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ PERFIL ============ -->
+    <section class="screen" id="perfil" data-title="Perfil" hidden>
+      <div class="who">
+        <span class="avatar" aria-hidden="true">👤</span>
+        <div><h1 tabindex="-1" style="margin:0">Mi perfil</h1><p class="hint" id="who-sub" style="font-size:16px"></p></div>
+      </div>
+
+      <div class="split" style="margin-top:20px">
+        <form id="f-perfil" novalidate>
+          <h2 id="mis-datos" style="margin-top:0">Mis datos</h2>
+          <div class="field"><label class="lbl" for="p-nombre">👤 Nombre</label><input type="text" id="p-nombre" autocomplete="name" aria-describedby="e-pnombre"><div class="err" id="e-pnombre" role="alert"></div></div>
+          <div class="field"><label class="lbl" for="p-tel">📱 Teléfono</label><input type="tel" id="p-tel" autocomplete="tel" readonly style="background:var(--page)"><span class="hint">Es tu acceso a AbueApp, por eso no se cambia aquí.</span></div>
+          <div class="field"><label class="lbl" for="p-mail">📧 Correo electrónico</label><input type="email" id="p-mail" autocomplete="email" aria-describedby="e-pmail"><div class="err" id="e-pmail" role="alert"></div></div>
+          <div class="field"><label class="lbl" for="p-dir">📍 Dirección</label><input type="text" id="p-dir" autocomplete="street-address"></div>
+          <div class="field"><label class="lbl" for="p-pago">💳 Método de pago</label><input type="text" id="p-pago" placeholder="Cómo prefieres pagar"></div>
+          <button class="btn" type="submit">Guardar mis datos</button>
+        </form>
+
+        <div><ul class="menu">
+          <li><a href="#perfil" data-go="datos">👤 Mis datos <span class="chev" aria-hidden="true">›</span></a></li>
+          <li><a href="#perfil" data-soon>📍 Mis direcciones <span class="chev" aria-hidden="true">›</span></a></li>
+          <li><a href="#perfil" data-soon>💳 Mis métodos de pago <span class="chev" aria-hidden="true">›</span></a></li>
+          <li><a href="#servicios">🧾 Historial de servicios <span class="chev" aria-hidden="true">›</span></a></li>
+          <li><a href="#chat">🙋 Ayuda <span class="chev" aria-hidden="true">›</span></a></li>
+        </ul>
+          <button class="btn ghost block" id="logout" type="button" style="margin-top:14px">Cerrar sesión</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Barra inferior (celular y tablet) -->
+  <div class="bottom">
+    <nav class="tabs" aria-label="Principal">
+      <a class="tab" href="#inicio" data-tab="inicio">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</a>
+      <a class="tab" href="#servicios" data-tab="servicios">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13l2 2 4-4"/></svg>Mis servicios</a>
+      <a class="tab" href="#chat" data-tab="chat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>Chat</a>
+      <a class="tab" href="#perfil" data-tab="perfil">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 5-7 8-7s7 2 8 7"/></svg>Perfil</a>
+    </nav>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<dialog id="ok" aria-labelledby="ok-title">
+  <span class="big" aria-hidden="true">✅</span>
+  <h2 id="ok-title">¡Solicitud enviada!</h2>
+  <p id="ok-msg">Te contactaremos pronto.</p>
+  <button class="btn block" id="ok-btn" autofocus>Ver mis servicios</button>
+</dialog>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  /* Para conectar el chat con WhatsApp, pon aquí el número con lada, ej. '5215512345678'.
+     Si está vacío, se muestra un chat de demostración dentro de la app. */
+  const WHATSAPP = '';
+
+  /* ---------- Cuentas y sesión (guardadas en este dispositivo) ----------
+     state.accounts = { "5512345678": { profile:{...}, services:[...] } }
+     state.session  = teléfono de la cuenta con sesión iniciada (o null)   */
+  const KEY = 'abueapp:v2';
+  let state = { accounts: {}, session: null };
+  try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.accounts) state = d; } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const acct = () => (state.session && state.accounts[state.session]) || null;
+  if (state.session && !acct()) { state.session = null; save(); }
+
+  /* ---------- Rutas ---------- */
+  const tabOf = { inicio:'inicio', limpieza:'inicio', compra:'inicio', solicitar:'inicio',
+                  'form-compra':'inicio', 'form-limpieza':'inicio',
+                  servicios:'servicios', chat:'chat', perfil:'perfil', bienvenida:'perfil' };
+  const needsLogin = ['servicios', 'perfil', 'form-compra', 'form-limpieza'];
+  let next = null;
+  const screens = $$('.screen');
+
+  function route() {
+    let id = location.hash.slice(1);
+    const a = acct();
+    if (needsLogin.includes(id) && !a) { next = id; location.hash = '#bienvenida'; return; }
+    if (id === 'bienvenida' && a) { location.hash = '#inicio'; return; }
+    const cur = tabOf[id] ? id : 'inicio';
+
+    screens.forEach(s => s.hidden = s.id !== cur);
+    $('.app').classList.toggle('is-home', cur === 'inicio');
+    $$('[data-tab]').forEach(l => l.dataset.tab === tabOf[cur]
+      ? l.setAttribute('aria-current', 'page') : l.removeAttribute('aria-current'));
+
+    const hello = $('#hello');
+    hello.hidden = !a;
+    if (a) hello.textContent = 'Hola, ' + (a.profile.nombre || '').split(' ')[0] + ' 👋';
+
+    const sec = $('#' + cur);
+    document.title = sec.dataset.title + ' · AbueApp';
+    if (cur === 'servicios') renderServices();
+    if (cur === 'perfil') fillProfile();
+    if (a && cur === 'form-compra' && !$('#c-dir').value) $('#c-dir').value = a.profile.dir || '';
+    if (a && cur === 'form-limpieza' && !$('#l-dir').value) $('#l-dir').value = a.profile.dir || '';
+    window.scrollTo(0, 0);
+    $('h1', sec).focus({ preventScroll: true });
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ---------- Avisos ---------- */
+  let tt;
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.hidden = false;
+    clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2800);
+  }
+
+  /* ---------- Utilidades de formulario ---------- */
+  function setErr(input, errId, msg) {
+    $('#' + errId).textContent = msg || '';
+    if (input) msg ? input.setAttribute('aria-invalid', 'true') : input.removeAttribute('aria-invalid');
+    return !msg;
+  }
+  const fmtDate = iso => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  };
+  const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+  $('#l-fecha').min = todayISO();
+  $$('input, select, textarea').forEach(el => el.addEventListener('input', () => el.removeAttribute('aria-invalid')));
+
+  /* ---------- Iniciar sesión / crear perfil ---------- */
+  $('#f-auth').addEventListener('submit', e => {
+    e.preventDefault();
+    const nombre = $('#a-nombre'), tel = $('#a-tel'), mail = $('#a-mail');
+    const digits = tel.value.replace(/\D/g, '').slice(-10);
+    const ok = [
+      setErr(nombre, 'e-anombre', nombre.value.trim() ? '' : 'Escribe tu nombre.'),
+      setErr(tel, 'e-atel', tel.value.replace(/\D/g, '').length >= 10 ? '' : 'Escribe tu teléfono a 10 dígitos.'),
+      setErr(mail, 'e-amail', !mail.value.trim() || /^\S+@\S+\.\S+$/.test(mail.value.trim()) ? '' : 'Revisa tu correo electrónico.')
+    ].every(Boolean);
+    if (!ok) { $('[aria-invalid=true]').focus(); return; }
+
+    const existed = !!state.accounts[digits];
+    if (!existed) {
+      state.accounts[digits] = { profile: { nombre: nombre.value.trim(), tel: digits, mail: mail.value.trim(), dir: '', pago: '' }, services: [] };
+    } else if (mail.value.trim() && !state.accounts[digits].profile.mail) {
+      state.accounts[digits].profile.mail = mail.value.trim();
+    }
+    state.session = digits; save();
+    e.target.reset();
+    toast(existed ? 'Qué gusto verte de nuevo 👋' : 'Perfil creado ✅');
+    const dest = next || 'inicio'; next = null;
+    if (location.hash === '#' + dest) route(); else location.hash = '#' + dest;
+  });
+
+  $('#logout').onclick = () => {
+    state.session = null; save();
+    toast('Sesión cerrada');
+    if (location.hash === '#inicio') route(); else location.hash = '#inicio';
+  };
+
+  /* ---------- Compra + entrega ---------- */
+  const prods = $('#prods');
+  function addProd(focus) {
+    const row = document.createElement('div'); row.className = 'prod-row';
+    row.innerHTML = '<input type="text" aria-label="Producto" placeholder="Ej. 1 kg de arroz"><button type="button" aria-label="Quitar producto">✕</button>';
+    row.querySelector('button').onclick = () => { row.remove(); sync(); };
+    prods.appendChild(row); sync();
+    if (focus) row.querySelector('input').focus();
+  }
+  function sync() {
+    const rows = $$('.prod-row', prods);
+    rows.forEach(r => r.querySelector('button').hidden = rows.length < 2);
+  }
+  $('#add-prod').onclick = () => addProd(true);
+  addProd(false);
+
+  $('#f-compra').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = acct(); if (!a) { next = 'form-compra'; location.hash = '#bienvenida'; return; }
+    const tipo = $('input[name=tipo]:checked');
+    const items = $$('.prod-row input', prods).map(i => i.value.trim()).filter(Boolean);
+    const dir = $('#c-dir');
+    const ok = [
+      setErr(null, 'e-tipo', tipo ? '' : 'Elige qué necesitas comprar.'),
+      setErr(null, 'e-prods', items.length ? '' : 'Agrega al menos un producto.'),
+      setErr(dir, 'e-cdir', dir.value.trim() ? '' : 'Escribe la dirección de entrega.')
+    ].every(Boolean);
+    if (!ok) { $('[aria-invalid=true], .err:not(:empty)')?.scrollIntoView({ block:'center', behavior:'smooth' }); return; }
+    a.services.unshift({ id: Date.now(), type: 'compra', kind: tipo.value, items,
+      date: todayISO(), dir: dir.value.trim(), notes: $('#c-notas').value.trim() });
+    if (!a.profile.dir) a.profile.dir = dir.value.trim();
+    save();
+    e.target.reset(); prods.innerHTML = ''; addProd(false);
+    confirmed('Tu compra + entrega está en proceso. Te avisaremos cuando salga el motorepartidor.');
+  });
+
+  /* ---------- Limpieza ---------- */
+  $('#f-limpieza').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = acct(); if (!a) { next = 'form-limpieza'; location.hash = '#bienvenida'; return; }
+    const dir = $('#l-dir'), fecha = $('#l-fecha'), hora = $('#l-hora');
+    const ok = [
+      setErr(dir, 'e-ldir', dir.value.trim() ? '' : 'Escribe la dirección.'),
+      setErr(fecha, 'e-lfecha', !fecha.value ? 'Selecciona una fecha.' : fecha.value < todayISO() ? 'Elige una fecha de hoy en adelante.' : ''),
+      setErr(hora, 'e-lhora', hora.value ? '' : 'Selecciona un horario.')
+    ].every(Boolean);
+    if (!ok) { $('[aria-invalid=true]').focus(); return; }
+    a.services.unshift({ id: Date.now(), type: 'limpieza', date: fecha.value, time: hora.value, dir: dir.value.trim() });
+    if (!a.profile.dir) a.profile.dir = dir.value.trim();
+    save();
+    e.target.reset();
+    confirmed('Tu servicio de limpieza quedó confirmado.');
+  });
+
+  function confirmed(msg) {
+    $('#ok-msg').textContent = msg;
+    $('#ok').showModal();
+  }
+  $('#ok-btn').onclick = () => { $('#ok').close(); location.hash = '#servicios'; };
+  $('#ok').addEventListener('close', () => { if (location.hash !== '#servicios') location.hash = '#servicios'; });
+
+  /* ---------- Mis servicios ---------- */
+  function renderServices() {
+    const box = $('#lista'), a = acct();
+    const list = a ? a.services : [];
+    if (!list.length) {
+      box.innerHTML = '<div class="empty"><span class="e" aria-hidden="true">📋</span>Todavía no tienes servicios.<br><a class="btn" href="#solicitar">Solicitar servicio</a></div>';
+      return;
+    }
+    box.innerHTML = list.map(s => s.type === 'limpieza' ? `
+      <article class="item">
+        <h3>🧹 Limpieza del hogar</h3>
+        <div class="row">📅 Fecha: <b>${esc(fmtDate(s.date))}</b></div>
+        <div class="row">🕐 Hora: <b>${esc(s.time)}</b></div>
+        <div class="row">📍 Dirección: <b>${esc(s.dir)}</b></div>
+        <div class="row">💰 <b>$550</b></div>
+        <span class="status ok">Estado: Confirmado ✅</span>
+      </article>` : `
+      <article class="item">
+        <h3>🛵 Compra + entrega</h3>
+        <div class="row">${esc(s.kind)}: <b>${esc(s.items.join(', '))}</b></div>
+        <div class="row">📅 Fecha: <b>${esc(fmtDate(s.date))}</b></div>
+        <div class="row">📍 Dirección: <b>${esc(s.dir)}</b></div>
+        <div class="row">💰 <b>Desde $150</b></div>
+        <span class="status wip">Estado: En proceso 🛵</span>
+      </article>`).join('');
+  }
+
+  /* ---------- Chat ---------- */
+  const msgs = $('#msgs');
+  function addMsg(text, who) {
+    const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = text;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+  $('#btn-chat').onclick = () => {
+    if (WHATSAPP) {
+      window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola, necesito ayuda con mi servicio de AbueApp.'), '_blank', 'noopener');
+      return;
+    }
+    $('#chat-start').hidden = true; $('#chat-box').hidden = false;
+    if (!msgs.children.length) addMsg('¡Hola! Somos el equipo de AbueApp. ¿En qué te podemos ayudar?', 'them');
+    $('#chat-in').focus();
+  };
+  $('#f-chat').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#chat-in').value.trim(); if (!v) return;
+    addMsg(v, 'me'); $('#chat-in').value = '';
+  });
+
+  /* ---------- Perfil ---------- */
+  const pf = { nombre:'#p-nombre', tel:'#p-tel', mail:'#p-mail', dir:'#p-dir', pago:'#p-pago' };
+  function fillProfile() {
+    const a = acct(); if (!a) return;
+    for (const k in pf) $(pf[k]).value = a.profile[k] || '';
+    $('#who-sub').textContent = (a.profile.nombre || '') + ' · ' + a.profile.tel;
+  }
+  $('#f-perfil').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = acct(); if (!a) return;
+    const nombre = $('#p-nombre'), mail = $('#p-mail');
+    const ok = [
+      setErr(nombre, 'e-pnombre', nombre.value.trim() ? '' : 'Escribe tu nombre.'),
+      setErr(mail, 'e-pmail', !mail.value.trim() || /^\S+@\S+\.\S+$/.test(mail.value.trim()) ? '' : 'Revisa tu correo electrónico.')
+    ].every(Boolean);
+    if (!ok) { $('[aria-invalid=true]').focus(); return; }
+    for (const k in pf) if (k !== 'tel') a.profile[k] = $(pf[k]).value.trim();
+    save(); fillProfile(); toast('Datos guardados ✅');
+  });
+  $('[data-go=datos]').addEventListener('click', e => { e.preventDefault(); $('#mis-datos').scrollIntoView({ behavior:'smooth' }); $('#p-nombre').focus(); });
+  $$('[data-soon]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); toast('Próximamente'); }));
+
+  route();
+})();
+</script>
+</body>
+</html>
