@@ -1904,30 +1904,61 @@
       /* Comercios con distancia aproximada desde Plaza Crystal (Lázaro Cárdenas).
    t: s = despensa, f = farmacia, sf = ambos. d = km (editable). */
       const STORES = [
+        /* Xalapa */
+        { n: "Chedraui Plaza Crystal", t: "sf", d: 0.1 },
         { n: "Walmart Lázaro Cárdenas", t: "s", d: 0.3 },
-        { n: "Walmart Express Ánimas", t: "s", d: 3.1 },
-        { n: "Sam's Club Ánimas", t: "s", d: 3.2 },
-        { n: "Supercito Chedraui Mártires de Chicago", t: "s", d: 3.3 },
-        { n: "Chedraui Lázaro Cárdenas (Lomas de Ánimas)", t: "sf", d: 4.0 },
-        { n: "Chedraui 20 de Noviembre", t: "sf", d: 1.9 },
-        { n: "Chedraui Xalapa Centro", t: "sf", d: 2.6 },
-        { n: "Súper Chedraui Ruiz Cortines", t: "sf", d: 4.1 },
-        { n: "Soriana Híper Xalapa", t: "sf", d: 4.3 },
         { n: "Farmacias Similares Lázaro Cárdenas", t: "f", d: 0.4 },
         { n: "Farmacia Guadalajara Av. Américas", t: "f", d: 0.9 },
         { n: "Farmacia del Ahorro Jardines (24 h)", t: "f", d: 0.9 },
         { n: "Farmacia del Ahorro Castillo (24 h)", t: "f", d: 1.2 },
+        { n: "Bodega Aurrera Lázaro Cárdenas (Ánimas)", t: "s", d: 1.4 },
         { n: "Farmacia Guadalajara Pomona", t: "f", d: 1.8 },
+        { n: "Chedraui 20 de Noviembre", t: "sf", d: 1.9 },
+        { n: "Farmacias del Ahorro Ánimas (24 h)", t: "f", d: 2.2 },
         { n: "Farmacias Especializadas Plaza Cárdenas", t: "f", d: 2.2 },
         { n: "Farmacia Guadalajara 20 de Noviembre (24 h)", t: "f", d: 2.4 },
+        { n: "Bodega Aurrera Express Higueras", t: "s", d: 2.5 },
+        { n: "Chedraui Xalapa Centro", t: "sf", d: 2.6 },
         { n: "Farmacias YZA Cuauhtémoc", t: "f", d: 2.6 },
         { n: "Farmacia del Ahorro Ferrocarrilera (24 h)", t: "f", d: 2.8 },
-        { n: "Farmacia Guadalajara Rébsamen (24 h)", t: "f", d: 3.8 }
+        { n: "Walmart Express Ánimas", t: "s", d: 3.1 },
+        { n: "Sam's Club Ánimas", t: "s", d: 3.2 },
+        { n: "Supercito Chedraui Mártires de Chicago", t: "s", d: 3.3 },
+        { n: "Farmacia Guadalajara Rébsamen (24 h)", t: "f", d: 3.8 },
+        { n: "Chedraui Xalapa Museo", t: "sf", d: 3.8 },
+        { n: "Chedraui Lázaro Cárdenas (Lomas de Ánimas)", t: "sf", d: 4.0 },
+        { n: "Súper Chedraui Ruiz Cortines", t: "sf", d: 4.1 },
+        { n: "Soriana Híper Xalapa", t: "sf", d: 4.3 },
+        { n: "Súper Chedraui Revolución", t: "sf", d: 5.1 },
+        /* Banderilla */
+        { n: "Bodega Aurrera Banderilla", t: "s", d: 7.5 },
+        { n: "Farmacia Guadalajara Banderilla (24 h)", t: "f", d: 7.7 },
+        { n: "Supercito Chedraui Banderilla", t: "s", d: 8.7 },
+        /* Emiliano Zapata */
+        { n: "Bodega Aurrera Las Trancas (Emiliano Zapata)", t: "s", d: 8.6 },
+        /* Coatepec */
+        { n: "Farmacia Guadalajara Coatepec–Xalapa (24 h)", t: "f", d: 11.3 },
+        { n: "Farmacia de los Ángeles Coatepec", t: "f", d: 14.4 },
+        { n: "Supercito Chedraui Coatepec", t: "s", d: 14.4 },
+        { n: "Bodega Aurrera Coatepec", t: "s", d: 14.5 },
+        { n: "Tiendas Neto Coatepec", t: "s", d: 14.5 },
+        { n: "Farmacia Guadalajara Coatepec Centro (24 h)", t: "f", d: 14.5 },
+        { n: "Farmacias Similares Coatepec", t: "f", d: 14.6 },
+        { n: "Chedraui Coatepec", t: "sf", d: 15.1 },
+        /* Naolinco */
+        { n: "Farmacias Similares Naolinco", t: "f", d: 17.1 },
+        { n: "Farmacia San Martín Naolinco", t: "f", d: 17.4 },
+        /* Xico */
+        { n: "Mi Bodega Aurrera Xico", t: "s", d: 21.6 },
+        { n: "Farmacia Guadalajara Xico (24 h)", t: "f", d: 21.8 },
+        { n: "Farmacias Similares Xico", t: "f", d: 21.9 }
       ].sort((a, b) => a.d - b.d);
 
       /* Tabla: 0–2.1 km = $40, luego +$5 por cada km; lluvia +$10; >14.1 km se cotiza */
+      const MAX_KM = 35;
+      /* Tabla: 0–2.1 km = $40, luego +$5 por cada km; lluvia +$10; más de MAX_KM se cotiza */
       const shipPrice = (d, rain) => {
-        if (d > 14.1) return null;
+        if (d > MAX_KM) return null;
         const base = d <= 2.1 ? 40 : 40 + 5 * Math.ceil(Math.round((d - 2.1) * 10) / 10);
         return base + (rain ? 10 : 0);
       };
@@ -1941,7 +1972,10 @@
         const list = STORES.filter(s => k === 'both' ? s.t === 'sf' : s.t.includes(k));
         const prev = sel.value;
         sel.innerHTML = '<option value="">Selecciona un comercio</option>' +
-          list.map(s => `<option value="${STORES.indexOf(s)}">${esc(s.n)} · ${s.d.toFixed(1)} km</option>`).join('');
+          list.map(s => {
+            const p = shipPrice(s.d, $('#c-rain').checked);
+            return `<option value="${STORES.indexOf(s)}">${esc(s.n)} · ${s.d.toFixed(1)} km · ${p == null ? 'se cotiza' : '$' + p}</option>`;
+          }).join('');
         if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
         sel.disabled = !$('#c-dir').value.trim();
         if (sel.disabled) sel.options[0].textContent = 'Primero escribe tu dirección';
