@@ -2036,30 +2036,6 @@
       <div class="row">💰 Costo del envío: <b>${esc(envio(s))}</b></div>
       <span class="status wip">Estado: En proceso 🛵</span>
     </article>`).join('');
-      } function renderServices() {
-        const box = $('#lista'), a = acct();
-        const list = a ? a.services : [];
-        if (!list.length) {
-          box.innerHTML = '<div class="empty"><span class="e" aria-hidden="true">📋</span>Todavía no tienes servicios.<br><a class="btn" href="#solicitar">Solicitar servicio</a></div>';
-          return;
-        }
-        box.innerHTML = list.map(s => s.type === 'limpieza' ? `
-      <article class="item">
-        <h3>🧹 Limpieza del hogar</h3>
-        <div class="row">📅 Fecha: <b>${esc(fmtDate(s.date))}</b></div>
-        <div class="row">🕐 Hora: <b>${esc(s.time)}</b></div>
-        <div class="row">📍 Dirección: <b>${esc(s.dir)}</b></div>
-        <div class="row">💰 <b>$550</b></div>
-        <span class="status ok">Estado: Confirmado ✅</span>
-      </article>` : `
-      <article class="item">
-        <h3>🛵 Compra + entrega</h3>
-        <div class="row">${esc(s.kind)}: <b>${esc(s.items.join(', '))}</b></div>
-        <div class="row">📅 Fecha: <b>${esc(fmtDate(s.date))}</b></div>
-        <div class="row">📍 Dirección: <b>${esc(s.dir)}</b></div>
-        <div class="row">💰 <b>Desde $150</b></div>
-        <span class="status wip">Estado: En proceso 🛵</span>
-      </article>`).join('');
       }
 
       /* ---------- Chat ---------- */
